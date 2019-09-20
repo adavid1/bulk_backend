@@ -47,8 +47,8 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-# at the root of project :
 ```bash
+# Start mongo database, at the root of project :
 $ docker-compose up
 ```
 
