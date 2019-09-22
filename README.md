@@ -47,6 +47,11 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+```bash
+# Start mongo database, at the root of project :
+$ docker-compose up
+```
+
 ## Test
 
 ```bash

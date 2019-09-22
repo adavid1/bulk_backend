@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('session')
-export class SessionController {}
+export class SessionController {
+  @Get()
+  findAll(): string {
+    return 'This action returns all sessions';
+  }
+}
