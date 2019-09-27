@@ -15,11 +15,20 @@ export class UserController {
         })
     }
 
+    /*
     //fetch a user by ID
-    @Get('user/:userID')
+    @Get('/:userID')
     async getUser(@Res() res, @Param('userID') userID){
         const user = await this.userService.getUserByID(userID);
         if(!user) throw new NotFoundException('User does not exist');
         return res.status(HttpStatus.OK).json(user);
+    }
+    */
+
+    //fetch all users
+    @Get('')
+    async getAllUser(@Res() res){
+        const users = await this.userService.getAllUser();
+        return res.status(HttpStatus.OK).json(users);
     }
 }

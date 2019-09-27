@@ -14,9 +14,17 @@ export class UserService {
         return newUser.save();
     }
 
+    //get all user of sessions by session ID
+
     //Get a single user by its ID
     async getUserByID(userID): Promise<User>{
-        const user = await this.userModel.findByName(userID).exec();
+        const user = await this.userModel.findById(userID).exec();
         return user;
+    }
+
+    //get all users
+    async getAllUser(): Promise<User[]>{
+        const users = await this.userModel.find().exec();
+        return users;
     }
 }
