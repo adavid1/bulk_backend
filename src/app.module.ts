@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { UserModule } from './user/user.module';
 import { SessionController } from './session/session.controller';
 import { SessionService } from './session/session.service';
@@ -15,6 +17,7 @@ import { ChoiceModule } from './choice/choice.module';
   imports: [
     MongooseModule.forRoot('mongodb://mongo:27017/bulkdb',
     {useNewUrlParser:true}),
+    TypeOrmModule.forRoot(),
     UserModule,
     SessionModule,
     QuestionModule,

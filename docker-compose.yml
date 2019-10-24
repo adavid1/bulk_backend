@@ -11,6 +11,7 @@ services:
     - api
     depends_on:
     - mongo
+    - sqldb
   mongo:
     image: mongo:4.2
     ports:
@@ -19,7 +20,20 @@ services:
     - api
     environment:
     - MONGO_INITDB_DATABASE= bulkdb
-
+  sqldb:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'sqldb'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+    - api
 networks:
   api:
     driver: bridge
