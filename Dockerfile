@@ -8,15 +8,9 @@ WORKDIR /usr/src/app
 COPY package*.json /usr/src/app/
 RUN npm install
 
-# Building for production :
-# RUN npm ci --only=production
-
 # Bundle app source
 COPY . /usr/src/app
 
 EXPOSE 3000
 
 CMD [ "npm", "run", "start" ]
-
-# ts-node -r tsconfig-paths/register src/main.ts
-#    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/main.js\"",
