@@ -12,6 +12,8 @@ import { QuestionService } from './question/question.service';
 import { ChoiceService } from './choice/choice.service';
 import { QuestionModule } from './question/question.module';
 import { ChoiceModule } from './choice/choice.module';
+import { CategoryController } from './category/category.controller';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -21,9 +23,10 @@ import { ChoiceModule } from './choice/choice.module';
     UserModule,
     SessionModule,
     QuestionModule,
-    ChoiceModule],
-  controllers: [AppController, SessionController],
-  providers: [AppService, SessionService, QuestionService, ChoiceService],
+    ChoiceModule,
+    CategoryModule],
+  controllers: [AppController],
+  providers: [AppService],
 
 })
 export class AppModule { }

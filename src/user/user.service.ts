@@ -13,11 +13,12 @@ export class UserService {
     async addUser(dto: CreateUserDTO): Promise<User>{
         // check uniqueness of username/email
         const {name, email, password, administrator, score} = dto;
-        this.usersRepository
-            .createQueryBuilder('user')
-            .where('user.name = :name', { name })
-            .orWhere('user.email = :email', { email });
-        const user = await this.usersRepository.findOne();
+        
+        console.log(name);
+
+        
+        const user = await this.usersRepository.
+                    findOne({ name: name, email: email });
         if (user) {
             const errors = {username: 'Username and/or email already taken.'};
             throw new HttpException({message: 'Input data validation failed', errors}, HttpStatus.BAD_REQUEST);
@@ -33,7 +34,7 @@ export class UserService {
 
         const errors = await validate(newUser);
         if (errors.length > 0) {
-            const _errors = {username: 'Userinput is not valid.'};
+            const _errors = {username: 'User input is not valid.'};
             throw new HttpException({message: 'Input data validation failed', _errors}, HttpStatus.BAD_REQUEST);
         } else {
             const savedUser = await this.usersRepository.save(newUser);
