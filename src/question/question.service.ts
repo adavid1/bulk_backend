@@ -18,6 +18,7 @@ export class QuestionService {
 
         // create new question
         let newQuestion = new Question();
+        newQuestion.categoryId = categoryId;
         newQuestion.question = question;
         newQuestion.author = author;
 
