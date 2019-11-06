@@ -5,19 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserModule } from './user/user.module';
-import { SessionController } from './session/session.controller';
-import { SessionService } from './session/session.service';
 import { SessionModule } from './session/session.module';
-import { QuestionService } from './question/question.service';
-import { ChoiceService } from './choice/choice.service';
 import { QuestionModule } from './question/question.module';
 import { ChoiceModule } from './choice/choice.module';
-import { CategoryController } from './category/category.controller';
 import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo:27017/bulkdb',
+    MongooseModule.forRoot('mongodb://mongo:27017/bulkdb?replicaSet=rs0',
     {useNewUrlParser:true}),
     TypeOrmModule.forRoot(),
     UserModule,

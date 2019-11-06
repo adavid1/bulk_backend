@@ -1,8 +1,13 @@
 import * as mongoose from 'mongoose';
-import { UserSchema } from '../user/user.entity';
-import { QuestionSchema } from '../question/question.schema';
+import { User } from '../user/user.entity';
+import { Question } from '../question/question.entity';
+import { Category } from 'src/category/category.entity';
+import { Choice } from 'src/choice/choice.entity';
 
 export const SessionSchema = new mongoose.Schema({
-  questions: QuestionSchema,
-  user: UserSchema,
+  sessionId: String,
+  user: User,
+  categoriy : Category,
+  question : Question,
+  choice : Choice
 });

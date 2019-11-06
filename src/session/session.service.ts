@@ -12,7 +12,7 @@ export class SessionService {
     constructor(@InjectModel('Session') private readonly sessionModel : Model<Session>) {}
 
     //Create a session
-    async addUser(CreateSessionDTO: CreateSessionDTO): Promise<Session>{
+    async createSession(CreateSessionDTO: CreateSessionDTO): Promise<Session>{
         const newSession = await this.sessionModel(CreateSessionDTO);
         return newSession.save();
     }
