@@ -12,7 +12,7 @@ import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo:27017/bulkdb?replicaSet=rs0',
+    MongooseModule.forRoot('mongodb://mongo:27017/bulkdb',
     {useNewUrlParser:true}),
     TypeOrmModule.forRoot(),
     UserModule,

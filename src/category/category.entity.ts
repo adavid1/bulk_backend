@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Question } from '../question/question.entity';
 
 export enum Language {
     EN,
@@ -19,8 +20,11 @@ export class Category {
     @Column({nullable:true})
     dateCreation:Date;
 
-    @Column({nullable:true}) 
-    owner:number;
+    @ManyToOne(type => User, user => user.categories)
+    owner: User;
+
+    @OneToMany(type => Question, question => question.category)
+    questions: Question[];
 
     @Column({
       default: false

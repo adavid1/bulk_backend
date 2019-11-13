@@ -14,11 +14,11 @@ export class ChoiceService {
     //Add a choice
     async addChoice(dto: ChoiceDTO): Promise<Choice>{
 
-        const {choiceId, questionId, choice} = dto;
+        const {question, choice} = dto;
 
         // create new choice
         let newChoice = new Choice();
-        newChoice.questionId = questionId;
+        newChoice.question = question;
         newChoice.choice = choice;
 
         const errors = await validate(newChoice);

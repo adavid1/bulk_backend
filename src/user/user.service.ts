@@ -12,7 +12,7 @@ export class UserService {
     //Create a user
     async addUser(dto: CreateUserDTO): Promise<User>{
         // check uniqueness of username/email
-        const {name, email, guest, password, administrator, score} = dto;
+        const {name, email, guest, password, administrator, score, questions, categories} = dto;
         
         console.log(name);
 
@@ -32,6 +32,8 @@ export class UserService {
         newUser.password = password;
         newUser.administrator = administrator;
         newUser.score = score;
+        newUser.questions = questions;
+        newUser.categories = categories;
 
         const errors = await validate(newUser);
         if (errors.length > 0) {

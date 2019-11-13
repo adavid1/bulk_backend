@@ -1,4 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Choice } from '../choice/choice.entity';
+import { User } from '../user/user.entity';
+import { Category } from '../category/category.entity';
 
 @Entity()
 export class Question {
@@ -6,12 +9,15 @@ export class Question {
     @PrimaryGeneratedColumn()
     questionId: number;
 
-    @Column({nullable:true})
-    categoryId: number;
+    @ManyToOne(type => Category, category => category.questions)
+    category: Category;
 
-    @Column({nullable:true})
-    author: number;
+    @ManyToOne(type => User, user => user.questions)
+    author: User;
 
     @Column({ length: 100, default: null, nullable:true })
     question:string;
+
+    @OneToMany(type => Choice, choice => choice.question)
+    choices: Choice[];
 }

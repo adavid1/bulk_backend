@@ -1,3 +1,6 @@
+import { Question } from "../question/question.entity";
+import { Category } from "../category/category.entity";
+
 export class CreateUserDTO{
     readonly userId: number;
     readonly name:string;
@@ -6,4 +9,6 @@ export class CreateUserDTO{
     readonly password:string;
     readonly administrator:boolean;
     readonly score:number;
+    readonly questions: Question[];
+    readonly categories: Category[];
 }
