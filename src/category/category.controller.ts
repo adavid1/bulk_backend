@@ -9,23 +9,20 @@ export class CategoryController {
 
     //add a category
     @Post('/create')
-    async addUser(@Res() res, @Body() categoryDTO: CategoryDTO){
+    async addCategory(@Res() res, @Body() categoryDTO: CategoryDTO){
         const category = await this.categoryService.addCategory(categoryDTO);
         return res.status(HttpStatus.OK).json({
             message: "Category has been created successfully", category
         })
     }
 
-    //TODO
-    /*
-    //fetch a user by ID
-    @Get('/:userID')
-    async getUser(@Res() res, @Param('userID') userID){
-        const user = await this.userService.getUserByID(userID);
-        if(!user) throw new NotFoundException('User does not exist');
-        return res.status(HttpStatus.OK).json(user);
+    //fetch a category by Id
+    @Get('/:categoryId')
+    async getCategory(@Res() res, @Param('categoryId') categoryId){
+        const category = await this.categoryService.getCategoryById(categoryId);
+        if(!category) throw new NotFoundException('Category does not exist');
+        return res.status(HttpStatus.OK).json(category);
     }
-    */
 
     //fetch all categories
     @Get('')

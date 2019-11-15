@@ -16,6 +16,14 @@ export class ChoiceController {
         })
     }
 
+    //fetch a choice by Id
+    @Get('/:choiceId')
+    async getChoice(@Res() res, @Param('choiceId') choiceId){
+        const choice = await this.choiceService.getChoiceById(choiceId);
+        if(!choice) throw new NotFoundException('Choice does not exist');
+        return res.status(HttpStatus.OK).json(choice);
+    }
+
     //fetch all choices
     @Get('')
     async getAllChoice(@Res() res){

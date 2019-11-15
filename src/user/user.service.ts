@@ -45,15 +45,15 @@ export class UserService {
         }
     }
 
-    //Get a single user by its ID
-    async getUserByID(userID): Promise<User>{
-        const user = await this.userRepository.findByIds(userID);
+    //Get a single user by its Id
+    async getUserById(userId): Promise<User>{
+        const user = await this.userRepository.findByIds(userId, {relations: ["questions"]});
         return user[0];
     }
 
     //get all users
     async getAllUser(): Promise<User[]>{
-        const users = await this.userRepository.find();
+        const users = await this.userRepository.find({relations: ["questions"]});
         return users;
     }
 

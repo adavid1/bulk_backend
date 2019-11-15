@@ -15,16 +15,13 @@ export class UserController {
         })
     }
 
-    //TODO
-    /*
-    //fetch a user by ID
-    @Get('/:userID')
-    async getUser(@Res() res, @Param('userID') userID){
-        const user = await this.userService.getUserByID(userID);
+    //fetch a user by Id
+    @Get('/:userId')
+    async getUser(@Res() res, @Param('userId') userId){
+        const user = await this.userService.getUserById(userId);
         if(!user) throw new NotFoundException('User does not exist');
         return res.status(HttpStatus.OK).json(user);
     }
-    */
 
     //fetch all users
     @Get('')

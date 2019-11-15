@@ -16,6 +16,14 @@ export class QuestionController {
         })
     }
 
+    //fetch a question by Id
+    @Get('/:questionId')
+    async getQuestion(@Res() res, @Param('questionId') questionId){
+        const question = await this.questionService.getQuestionById(questionId);
+        if(!question) throw new NotFoundException('Question does not exist');
+        return res.status(HttpStatus.OK).json(question);
+    }
+
     //fetch all questions
     @Get('')
     async getAllQuestion(@Res() res){

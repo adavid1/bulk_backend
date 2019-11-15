@@ -44,10 +44,10 @@ export class ChoiceService {
         }
     }
 
-    //Get a single choice by its ID
-    async getChoiceByID(choiceID): Promise<Choice>{
+    //Get a single choice by its Id
+    async getChoiceById(choiceId): Promise<Choice>{
         const choice = await this.choiceRepository
-                                .findByIds(choiceID);
+                                .findByIds(choiceId);
         return choice[0];
     }
 
@@ -58,9 +58,9 @@ export class ChoiceService {
     }
 
     //delete a choice
-    async deleteChoiceById(choiceID){
+    async deleteChoiceById(choiceId){
         const choice = await this.choiceRepository
-                                .findByIds(choiceID);
+                                .findByIds(choiceId);
         this.choiceRepository.remove(choice);
     }
 }

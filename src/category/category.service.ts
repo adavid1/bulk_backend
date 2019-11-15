@@ -40,10 +40,10 @@ export class CategoryService {
         }
     }
 
-    //Get a single category by its ID
-    async getCategoryByID(categoryID): Promise<Category>{
+    //Get a single category by its Id
+    async getCategoryById(categoryId): Promise<Category>{
         const category = await this.categoryRepository
-                                .findByIds(categoryID);
+                                .findByIds(categoryId);
         return category[0];
     }
 

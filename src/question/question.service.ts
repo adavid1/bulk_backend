@@ -34,10 +34,10 @@ export class QuestionService {
         }
     }
 
-    //Get a single question by its ID
-    async getQuestionByID(questionID): Promise<Question>{
+    //Get a single question by its Id
+    async getQuestionById(questionId): Promise<Question>{
         const question = await this.questionRepository
-                                .findByIds(questionID);
+                                .findByIds(questionId, {relations: ["choices"]});
         return question[0];
     }
 
