@@ -15,10 +15,8 @@ export class CategoryService {
     async addCategory(dto: CategoryDTO): Promise<Category>{
         // check uniqueness of username/email
         const {name, owner, isPublic, language} = dto;
-        this.categoryRepository
-            .createQueryBuilder('category')
-            .where('category.name = :name', { name });
-        const category = await this.categoryRepository.findOne();
+
+        const category = await this.categoryRepository.findOne({name:name});
         if (category) {
             const errors = {name: 'name already taken.'};
             throw new HttpException({message: 'Input data validation failed', errors}, HttpStatus.BAD_REQUEST);
@@ -53,5 +51,12 @@ export class CategoryService {
     async getAllCategory(): Promise<Category[]>{
         const categories = await this.categoryRepository.find();
         return categories;
+    }
+
+    //delete a category
+    async deleteCategoryById(categoryId){
+        const category = await this.categoryRepository
+                                .findByIds(categoryId);
+        this.categoryRepository.remove(category);
     }
 }

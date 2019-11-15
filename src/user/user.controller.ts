@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './create-user.dto';
 
@@ -31,5 +31,12 @@ export class UserController {
     async getAllUser(@Res() res){
         const users = await this.userService.getAllUser();
         return res.status(HttpStatus.OK).json(users);
+    }
+
+    //remove a user
+    @Delete('/delete/:id')
+    async deleteUser(@Res() res, @Param('id') id){
+        const categories = await this.userService.deleteUserById(id);
+        return res.status(HttpStatus.OK).json({message:"User deleted"});
     }
 }

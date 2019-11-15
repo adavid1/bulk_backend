@@ -47,4 +47,11 @@ export class QuestionService {
                         find({relations: ["choices"]});
         return questions;
     }
+
+    //delete a question
+    async deleteQuestionById(questionId){
+        const question = await this.questionRepository
+                                .findByIds(questionId);
+        this.questionRepository.remove(question);
+    }
 }

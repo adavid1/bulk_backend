@@ -1,4 +1,4 @@
-import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller } from '@nestjs/common';
+import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller, Delete } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDTO } from './question.dto';
 
@@ -23,4 +23,10 @@ export class QuestionController {
         return res.status(HttpStatus.OK).json(questions);
     }
 
+    //remove a question
+    @Delete('/delete/:id')
+    async deleteQuestion(@Res() res, @Param('id') id){
+        const categories = await this.questionService.deleteQuestionById(id);
+        return res.status(HttpStatus.OK).json({message:"Question deleted"});
+    }
 }
