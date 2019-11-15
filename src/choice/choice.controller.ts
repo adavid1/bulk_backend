@@ -1,4 +1,4 @@
-import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller } from '@nestjs/common';
+import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller, Delete } from '@nestjs/common';
 import { ChoiceService } from './choice.service';
 import { ChoiceDTO } from './choice.dto';
 
@@ -21,6 +21,13 @@ export class ChoiceController {
     async getAllChoice(@Res() res){
         const choices = await this.choiceService.getAllChoice();
         return res.status(HttpStatus.OK).json(choices);
+    }
+
+    //remove a choice
+    @Delete('/delete/:id')
+    async deleteChoice(@Res() res, @Param('id') id){
+        const choices = await this.choiceService.deleteChoiceById(id);
+        return res.status(HttpStatus.OK).json({message:"Choice deleted"});
     }
 
 }

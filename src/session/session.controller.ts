@@ -9,15 +9,16 @@ export class SessionController {
   //create a session
   @Post('/create')
   async addUser(@Res() res, @Body() createSessionDTO: CreateSessionDTO){
-      const session = await this.sessionService.
-                         createSession(createSessionDTO);
-      return res.status(HttpStatus.OK).json({
-          message: "Session has been created successfully", session
-      })
+    const session = await this.sessionService.
+                      createSession(createSessionDTO);
+    return res.status(HttpStatus.OK).json({
+        message: "Session has been created successfully", session
+    })
   }
 
-  @Get()
-  findAll(): string {
-    return 'This action returns all sessions';
+  @Get('')
+  async findAll(@Res() res) {
+    const sessions = await this.sessionService.getAllSession();
+    return res.status(HttpStatus.OK).json(sessions);
   }
 }

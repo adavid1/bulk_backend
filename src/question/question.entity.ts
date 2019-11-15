@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Choice } from '../choice/choice.entity';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
@@ -18,6 +18,7 @@ export class Question {
     @Column({ length: 100, default: null, nullable:true })
     question:string;
 
+    @JoinColumn()
     @OneToMany(type => Choice, choice => choice.question)
     choices: Choice[];
 }

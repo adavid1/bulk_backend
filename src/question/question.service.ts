@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Question } from './question.entity';
 import { QuestionDTO } from './question.dto';
 import { validate } from 'class-validator';
+import { NestApplication } from '@nestjs/core';
 
 @Injectable()
 export class QuestionService {
@@ -21,6 +22,7 @@ export class QuestionService {
         newQuestion.category = category;
         newQuestion.question = question;
         newQuestion.author = author;
+        newQuestion.choices = [];
 
         const errors = await validate(newQuestion);
         if (errors.length > 0) {
@@ -41,7 +43,8 @@ export class QuestionService {
 
     //get all question
     async getAllQuestion(): Promise<Question[]>{
-        const questions = await this.questionRepository.find();
+        const questions = await this.questionRepository.
+                        find({relations: ["choices"]});
         return questions;
     }
 }

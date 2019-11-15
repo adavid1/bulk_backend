@@ -14,6 +14,9 @@ export class SessionService {
     //Create a session
     async createSession(CreateSessionDTO: CreateSessionDTO): Promise<Session>{
         const newSession = await this.sessionModel(CreateSessionDTO);
+
+        newSession.dateCreation = new Date().getTime();
+
         return newSession.save();
     }
 

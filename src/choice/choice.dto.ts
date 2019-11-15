@@ -1,4 +1,4 @@
-import { Question } from "src/question/question.entity";
+import { Question } from "../question/question.entity";
 
 export class ChoiceDTO{
     readonly choiceId:number;

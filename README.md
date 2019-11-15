@@ -15,6 +15,9 @@ Bulk is a ...
 ## Running the app
 
 ```bash
+# Build
+$ npm install
+
 # Run
 $ docker-compose up
 ```

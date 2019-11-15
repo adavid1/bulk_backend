@@ -10,6 +10,6 @@ export class Choice {
     @ManyToOne(type => Question, question => question.choices)
     question: Question;
 
-    @Column({ length: 100, default: null, nullable:true })
+    @Column({ length: 100, nullable:true })
     choice:string;
 }

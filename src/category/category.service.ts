@@ -14,7 +14,7 @@ export class CategoryService {
     //Create a category
     async addCategory(dto: CategoryDTO): Promise<Category>{
         // check uniqueness of username/email
-        const {name, dateCreation, owner, isPublic, language} = dto;
+        const {name, owner, isPublic, language} = dto;
         this.categoryRepository
             .createQueryBuilder('category')
             .where('category.name = :name', { name });
@@ -27,7 +27,7 @@ export class CategoryService {
         // create new category
         let newCategory = new Category();
         newCategory.name = name;
-        newCategory.dateCreation = dateCreation;
+        newCategory.dateCreation = new Date();
         newCategory.owner = owner;
         newCategory.isPublic = isPublic;
         newCategory.language = language;

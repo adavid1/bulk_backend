@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Question } from '../question/question.entity';
+import { Session } from '../session/session.entity';
 
 export enum Language {
     EN,
@@ -20,6 +21,7 @@ export class Category {
     @Column({nullable:true})
     dateCreation:Date;
 
+    @JoinColumn()
     @ManyToOne(type => User, user => user.categories)
     owner: User;
 
