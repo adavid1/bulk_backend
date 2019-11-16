@@ -14,13 +14,13 @@ export class User {
     @Column({nullable:true})
     email:string;
 
-    @Column()
+    @Column({default:true})
     guest:boolean;
 
     @Column({nullable:true}) 
     password:string;
 
-    @Column()
+    @Column({default:false})
     administrator:boolean;
 
     @Column({ default: 0 })

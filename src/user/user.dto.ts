@@ -12,3 +12,15 @@ export class CreateUserDTO{
     readonly questions: Question[];
     readonly categories: Category[];
 }
+
+export class UpdateUserDTO{
+    readonly userId: number;
+    readonly name:string;
+    readonly email:string;
+    readonly guest:boolean;
+    readonly password:string;
+    readonly administrator:boolean;
+    readonly score:number;
+    readonly questions: Question[];
+    readonly categories: Category[];
+}

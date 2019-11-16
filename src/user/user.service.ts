@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { CreateUserDTO } from './create-user.dto';
+import { CreateUserDTO } from './user.dto';
 import { validate } from 'class-validator';
 
 @Injectable()
@@ -47,14 +47,19 @@ export class UserService {
 
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
-        const user = await this.userRepository.findByIds(userId, {relations: ["questions"]});
+        const user = await this.userRepository.findByIds(userId, {relations: ["questions", "categories"]});
         return user[0];
     }
 
     //get all users
     async getAllUser(): Promise<User[]>{
-        const users = await this.userRepository.find({relations: ["questions"]});
+        const users = await this.userRepository.find({relations: ["questions", "categories"]});
         return users;
+    }
+
+    //update a user
+    async saveUser(user: User): Promise<User> {
+        return await this.userRepository.save(user);
     }
 
     //delete a user

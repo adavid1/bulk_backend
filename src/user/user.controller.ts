@@ -1,6 +1,7 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDTO } from './create-user.dto';
+import { CreateUserDTO, UpdateUserDTO } from './user.dto';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
@@ -30,10 +31,19 @@ export class UserController {
         return res.status(HttpStatus.OK).json(users);
     }
 
+    //update user
+    @Put("/update/:id")
+    async putUser(@Res() res, @Param("id") id: number, @Body() user: UpdateUserDTO) {
+        const updatedUser = await this.userService.saveUser(user);
+        return res.status(HttpStatus.OK).json({
+            message: "user #" + id + " successfully updated", updatedUser
+        })
+    }
+
     //remove a user
     @Delete('/delete/:id')
     async deleteUser(@Res() res, @Param('id') id){
         const categories = await this.userService.deleteUserById(id);
-        return res.status(HttpStatus.OK).json({message:"User deleted"});
+        return res.status(HttpStatus.OK).json({message:"User #" + id + " successfully deleted"});
     }
 }
