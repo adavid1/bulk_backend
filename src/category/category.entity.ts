@@ -21,7 +21,6 @@ export class Category {
     @Column({nullable:true})
     dateCreation:Date;
 
-    @JoinColumn()
     @ManyToOne(type => User, user => user.categories)
     owner: User;
 

@@ -1,12 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, PrimaryColumn, Unique } from 'typeorm';
 import {Length, IsEmail, IsDate} from "class-validator";
 import { Question } from '../question/question.entity';
 import { Category } from '../category/category.entity';
 @Entity()
+@Unique(["name"])
+@Unique(["email"])
 export class User {
 
     @PrimaryGeneratedColumn()
-    userId: number;
+    userId: string;
 
     @Column({ length: 25, nullable:true })
     name:string;
@@ -20,16 +22,19 @@ export class User {
     @Column({nullable:true}) 
     password:string;
 
-    @Column({default:false})
+    @Column({nullable:true})
     administrator:boolean;
 
     @Column({ default: 0 })
     score:number;
 
     @JoinColumn()
-    @OneToMany(type => Question, question => question.author)
+    @OneToMany(type => Question, question => question.author,
+                {cascade: true})
     questions: Question[];
 
-    @OneToMany(type => Category, category => category.owner)
+    @JoinColumn()
+    @OneToMany(type => Category, category => category.owner,
+                {cascade: true})
     categories: Category[];
 }

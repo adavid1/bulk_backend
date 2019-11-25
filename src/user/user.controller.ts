@@ -33,8 +33,8 @@ export class UserController {
 
     //update user
     @Put("/update/:id")
-    async putUser(@Res() res, @Param("id") id: number, @Body() user: UpdateUserDTO) {
-        const updatedUser = await this.userService.saveUser(user);
+    async putUser(@Res() res, @Param("id") id: number, @Body() user: User) {
+        const updatedUser = await this.userService.saveUser(id, user);
         return res.status(HttpStatus.OK).json({
             message: "user #" + id + " successfully updated", updatedUser
         })
