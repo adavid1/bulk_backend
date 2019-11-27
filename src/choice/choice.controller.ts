@@ -1,7 +1,10 @@
-import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller, Delete } from '@nestjs/common';
+import { Post, Res, Body, HttpStatus, Get, Param,
+     NotFoundException, Controller, Delete, UseGuards } from '@nestjs/common';
 import { ChoiceService } from './choice.service';
 import { ChoiceDTO } from './choice.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('choice')
 export class ChoiceController {
 

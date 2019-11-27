@@ -13,13 +13,13 @@ export class UserService {
     //Create a user
     async addUser(dto: CreateUserDTO): Promise<User>{
         // check uniqueness of username/email
-        const {name, email, guest, password, administrator, score, questions, categories} = dto;
+        const {username, email, guest, password, administrator, score, questions, categories} = dto;
         
-        console.log(name);
+        console.log(username);
 
         
         const user = await this.userRepository.
-                    findOne({ name: name, email: email });
+                    findOne({ username: username, email: email });
         if (user) {
             const errors = {username: 'Username and/or email already taken.'};
             throw new HttpException({message: 'Input data validation failed', errors}, HttpStatus.BAD_REQUEST);
@@ -27,7 +27,7 @@ export class UserService {
 
         // create new user
         let newUser = new User();
-        newUser.name = name;
+        newUser.username = username;
         newUser.email = email;
         newUser.guest = guest;
         newUser.password = password;
@@ -50,6 +50,14 @@ export class UserService {
     async getUserById(userId): Promise<User>{
         const user = await this.userRepository.findByIds(userId, {relations: ["questions", "categories"]});
         return user[0];
+    }
+
+    //Get a single user by its name
+    async getUserByName(username:string): Promise<User>{
+        const user = await this.userRepository
+                    .findOne({username: username});
+        console.log("User by name : "+user);
+        return user;
     }
 
     //get all users

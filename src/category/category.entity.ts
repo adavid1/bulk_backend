@@ -15,10 +15,10 @@ export class Category {
     @PrimaryGeneratedColumn()
     categoryId: number;
 
-    @Column({ length: 50, default: null, nullable:true})
+    @Column({ length: 50, default: null})
     name:string;
 
-    @Column({nullable:true})
+    @Column()
     dateCreation:Date;
 
     @ManyToOne(type => User, user => user.categories)
@@ -27,9 +27,7 @@ export class Category {
     @OneToMany(type => Question, question => question.category)
     questions: Question[];
 
-    @Column({
-      default: false
-    })
+    @Column()
     isPublic:boolean;
 
     @Column({

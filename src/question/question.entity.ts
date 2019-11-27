@@ -15,7 +15,7 @@ export class Question {
     @ManyToOne(type => User, user => user.questions)
     author: User;
 
-    @Column({ length: 100, default: null, nullable:true })
+    @Column({ length: 100, default: null})
     question:string;
 
     @JoinColumn()

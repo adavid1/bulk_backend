@@ -1,7 +1,10 @@
-import { Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Controller, Delete } from '@nestjs/common';
+import { Post, Res, Body, HttpStatus, Get, Param,
+     NotFoundException, Controller, Delete, UseGuards } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDTO } from './question.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('question')
 export class QuestionController {
 

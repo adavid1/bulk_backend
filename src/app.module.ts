@@ -9,6 +9,7 @@ import { SessionModule } from './session/session.module';
 import { QuestionModule } from './question/question.module';
 import { ChoiceModule } from './choice/choice.module';
 import { CategoryModule } from './category/category.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { CategoryModule } from './category/category.module';
     SessionModule,
     QuestionModule,
     ChoiceModule,
-    CategoryModule],
+    CategoryModule,
+    AuthModule],
   controllers: [AppController],
   providers: [AppService],
 

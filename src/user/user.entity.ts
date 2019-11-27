@@ -3,29 +3,29 @@ import {Length, IsEmail, IsDate} from "class-validator";
 import { Question } from '../question/question.entity';
 import { Category } from '../category/category.entity';
 @Entity()
-@Unique(["name"])
+@Unique(["username"])
 @Unique(["email"])
 export class User {
 
     @PrimaryGeneratedColumn()
     userId: string;
 
-    @Column({ length: 25, nullable:true })
-    name:string;
+    @Column({ length: 25})
+    username:string;
 
-    @Column({nullable:true})
+    @Column()
     email:string;
 
-    @Column({default:true})
+    @Column({nullable:true})
     guest:boolean;
 
-    @Column({nullable:true}) 
+    @Column() 
     password:string;
 
     @Column({nullable:true})
     administrator:boolean;
 
-    @Column({ default: 0 })
+    @Column()
     score:number;
 
     @JoinColumn()

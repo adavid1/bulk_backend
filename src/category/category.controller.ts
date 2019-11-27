@@ -1,7 +1,10 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get,
+     Param, NotFoundException, Delete, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryDTO } from './category.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('category')
 export class CategoryController {
 
