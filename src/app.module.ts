@@ -13,8 +13,6 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo:27017/bulkdb',
-    {useNewUrlParser:true}),
     TypeOrmModule.forRoot(),
     UserModule,
     SessionModule,

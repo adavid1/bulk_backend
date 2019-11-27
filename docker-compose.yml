@@ -10,23 +10,7 @@ services:
     networks:
     - api
     depends_on:
-    - mongo
     - sqldb
-  mongo:
-    image: mongo:4.2
-    ports:
-    - "27017:27017"
-    networks:
-    - api
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: 'root' #${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: 'root'
-      MONGO_INITDB_DATABASE: 'bulkdb'
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
-    healthcheck:
-            test: test $$(echo "rs.initiate().ok || rs.status().ok") -eq 1
-            # $${MONGO_INITDB_ROOT_USERNAME}      $${MONGO_INITDB_ROOT_PASSWORD}
-            interval: 10s
   sqldb:
     image: mysql:5.7
     restart: always
