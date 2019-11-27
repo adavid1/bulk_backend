@@ -24,6 +24,7 @@ export class Category {
     @ManyToOne(type => User, user => user.categories)
     owner: User;
 
+    @JoinColumn()
     @OneToMany(type => Question, question => question.category)
     questions: Question[];
 

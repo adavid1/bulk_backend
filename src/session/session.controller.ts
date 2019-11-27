@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Res, Body, HttpStatus } from '@nestjs/common';
 import { CreateSessionDTO } from './create-session.dto';
 import { SessionService } from './session.service';
+import { Session } from './session.entity';
+
 
 @Controller('session')
 export class SessionController {
@@ -8,11 +10,11 @@ export class SessionController {
 
   //create a session
   @Post('/create')
-  async addUser(@Res() res, @Body() createSessionDTO: CreateSessionDTO){
-    const session = await this.sessionService.
-                      createSession(createSessionDTO);
+  async addSession(@Res() res, @Body() session: Session){
+    const newSession = await this.sessionService.
+                      createSession(session);
     return res.status(HttpStatus.OK).json({
-        message: "Session has been created successfully", session
+        message: "Session has been created successfully", newSession
     })
   }
 

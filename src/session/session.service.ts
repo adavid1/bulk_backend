@@ -1,36 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { Session } from './session.interface';
-import { CreateSessionDTO } from './create-session.dto';
-
-//TODO
-
+import { Session } from './session.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Injectable()
 export class SessionService {
-    constructor(@InjectModel('Session') private readonly sessionModel : Model<Session>) {}
+    constructor(@InjectRepository(Session) private readonly sessionRepository : Repository<Session>) {}
 
     //Create a session
-    async createSession(CreateSessionDTO: CreateSessionDTO): Promise<Session>{
-        const newSession = await this.sessionModel(CreateSessionDTO);
-
-        newSession.dateCreation = new Date().getTime();
-
-        return newSession.save();
+    async createSession(createSession: Session): Promise<Session>{
+        createSession.dateCreation = new Date();
+        return this.sessionRepository.save(createSession);
     }
 
     //get all user of sessions by session ID
 
     //Get a single session by its ID
     async getsessionByID(sessionID): Promise<Session>{
-        const session = await this.sessionModel.findById(sessionID).exec();
+        const session = await this.sessionRepository.
+                        findByIds(sessionID,
+                                {relations: ["players" ,
+                                             "categories"]})[0];
         return session;
     }
 
     //get all sessions
     async getAllSession(): Promise<Session[]>{
-        const sessions = await this.sessionModel.find().exec();
+        const sessions = await this.sessionRepository.
+                        find({relations: ["players", "categories"]});
         return sessions;
     }
 }
