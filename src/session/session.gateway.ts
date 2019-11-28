@@ -1,5 +1,5 @@
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { Session } from 'inspector';
 import { SessionService } from './session.service';
 

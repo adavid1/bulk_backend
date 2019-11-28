@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Session } from './session.entity';
-import { User } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class SessionService {
     constructor(
         @InjectRepository(Session)
         private readonly sessionRepository : Repository<Session>,
+        @Inject(UserService)
+        //private readonly userRepository : Repository<User>
         private readonly userService : UserService
         ) {}
 

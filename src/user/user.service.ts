@@ -4,11 +4,13 @@ import { Repository, UpdateResult } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDTO, UpdateUserDTO } from './user.dto';
 import { validate } from 'class-validator';
-import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepository : Repository<User>) {}
+    constructor(
+        @InjectRepository(User)
+        private userRepository : Repository<User>
+    ) {}
 
     //Create a user
     async addUser(dto: CreateUserDTO): Promise<User>{
