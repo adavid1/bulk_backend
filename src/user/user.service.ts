@@ -4,6 +4,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDTO, UpdateUserDTO } from './user.dto';
 import { validate } from 'class-validator';
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,8 @@ export class UserService {
         newUser.username = username;
         newUser.email = email;
         newUser.guest = guest;
-        newUser.password = password;
+        newUser.password = "ouiouioui";
+        newUser.password = bcrypt.hashSync(password, 10);
         newUser.administrator = administrator;
         newUser.score = score;
         newUser.questions = questions;
@@ -58,7 +60,6 @@ export class UserService {
     async getUserByName(username:string): Promise<User>{
         const user = await this.userRepository
                     .findOne({username: username});
-        console.log("User by name : "+user);
         return user;
     }
 
