@@ -10,7 +10,6 @@ export class SessionService {
         @InjectRepository(Session)
         private readonly sessionRepository : Repository<Session>,
         @Inject(UserService)
-        //private readonly userRepository : Repository<User>
         private readonly userService : UserService
         ) {}
 
