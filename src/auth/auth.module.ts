@@ -12,7 +12,7 @@ require('dotenv').config();
     PassportModule,
     JwtModule.register({
       secret: process.env.JWTSECRET,
-      signOptions: { expiresIn: '3600' },
+      signOptions: { expiresIn: 3600 },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

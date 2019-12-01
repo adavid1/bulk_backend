@@ -33,7 +33,6 @@ export class UserService {
         newUser.username = username;
         newUser.email = email;
         newUser.guest = guest;
-        newUser.password = "ouiouioui";
         newUser.password = bcrypt.hashSync(password, 10);
         newUser.administrator = administrator;
         newUser.score = score;
