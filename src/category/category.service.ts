@@ -4,11 +4,15 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDTO, UpdateCategoryDTO } from './category.dto';
 import { validate } from 'class-validator';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class CategoryService {
-    constructor(@InjectRepository(Category)
-        private categoryRepository : Repository<Category>) {}
+    constructor(
+        @InjectRepository(Category)
+        private categoryRepository : Repository<Category>,
+        @InjectRepository(User)
+        private userRepository : Repository<User>) {}
 
 
     //Create a category
@@ -30,6 +34,15 @@ export class CategoryService {
         newCategory.isPublic = isPublic;
         newCategory.language = language;
 
+        // Update user
+        if(owner){
+            const userFetched = await this.userRepository.findOne(owner);;
+            if(userFetched.categories==null)
+                userFetched.categories = new Array();
+            userFetched.categories.push(newCategory);
+        }
+
+        // update category
         const errors = await validate(newCategory);
         if (errors.length > 0) {
             const _errors = {name: 'Category input is not valid.'};
@@ -49,7 +62,7 @@ export class CategoryService {
 
     //get all category
     async getAllCategory(): Promise<Category[]>{
-        const categories = await this.categoryRepository.find();
+        const categories = await this.categoryRepository.find({relations: ["questions"]});
         return categories;
     }
 

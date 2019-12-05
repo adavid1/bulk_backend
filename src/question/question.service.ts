@@ -4,12 +4,15 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Question } from './question.entity';
 import { CreateQuestionDTO, UpdateQuestionDTO } from './question.dto';
 import { validate } from 'class-validator';
-import { NestApplication } from '@nestjs/core';
+import { Category } from '../category/category.entity';
 
 @Injectable()
 export class QuestionService {
-    constructor(@InjectRepository(Question)
-        private questionRepository : Repository<Question>) {}
+    constructor(
+        @InjectRepository(Question)
+        private questionRepository : Repository<Question>,
+        @InjectRepository(Category)
+        private categoryRepository : Repository<Category>) {}
 
 
     //Create a question
@@ -24,6 +27,16 @@ export class QuestionService {
         newQuestion.author = author;
         newQuestion.choices = [];
 
+        // Update category
+        if(category){
+            const categoryFetched = await this.categoryRepository.
+                                    findOne({categoryId: (Number)(category)});
+            if(categoryFetched.questions==null)
+                categoryFetched.questions = new Array();
+            categoryFetched.questions.push(newQuestion);
+        }
+
+        // update question
         const errors = await validate(newQuestion);
         if (errors.length > 0) {
             const _errors = {name: 'Question input is not valid.'};
