@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Res, Body, HttpStatus } from '@nestjs/common';
-import { CreateSessionDTO } from './create-session.dto';
+import { Controller, Get, Post, Res, Body, HttpStatus, Param, Put } from '@nestjs/common';
+import { CreateSessionDTO } from './session.dto';
 import { SessionService } from './session.service';
 import { Session } from './session.entity';
 

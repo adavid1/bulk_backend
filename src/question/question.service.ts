@@ -1,8 +1,8 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Question } from './question.entity';
-import { QuestionDTO } from './question.dto';
+import { CreateQuestionDTO, UpdateQuestionDTO } from './question.dto';
 import { validate } from 'class-validator';
 import { NestApplication } from '@nestjs/core';
 
@@ -13,7 +13,7 @@ export class QuestionService {
 
 
     //Create a question
-    async addQuestion(dto: QuestionDTO): Promise<Question>{
+    async addQuestion(dto: CreateQuestionDTO): Promise<Question>{
 
         const {category, author, question} = dto;
 
@@ -46,6 +46,11 @@ export class QuestionService {
         const questions = await this.questionRepository.
                         find({relations: ["choices"]});
         return questions;
+    }
+
+    //update a question
+    async saveQuestion(id, question: UpdateQuestionDTO): Promise<UpdateResult> {
+        return await this.questionRepository.update(id, question);
     }
 
     //delete a question

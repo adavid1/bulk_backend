@@ -1,8 +1,9 @@
 import { Controller, Post, Res, Body, HttpStatus, Get,
-     Param, NotFoundException, Delete, UseGuards } from '@nestjs/common';
+     Param, NotFoundException, Delete, UseGuards, Put } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoryDTO } from './category.dto';
+import { CreateCategoryDTO } from './category.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Category } from './category.entity';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('category')
@@ -12,7 +13,7 @@ export class CategoryController {
 
     //add a category
     @Post('/create')
-    async addCategory(@Res() res, @Body() categoryDTO: CategoryDTO){
+    async addCategory(@Res() res, @Body() categoryDTO: CreateCategoryDTO){
         const category = await this.categoryService.addCategory(categoryDTO);
         return res.status(HttpStatus.OK).json({
             message: "Category has been created successfully", category
@@ -32,6 +33,15 @@ export class CategoryController {
     async getAllCategory(@Res() res){
         const categories = await this.categoryService.getAllCategory();
         return res.status(HttpStatus.OK).json(categories);
+    }
+
+    //update category
+    @Put("/update/:id")
+    async putCategory(@Res() res, @Param("id") id: number, @Body() category: Category) {
+        const updatedCategory = await this.categoryService.saveCategory(id, category);
+        return res.status(HttpStatus.OK).json({
+            message: "category #" + id + " successfully updated", updatedCategory
+        })
     }
 
     //remove a category

@@ -1,8 +1,8 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, UpdateResult } from 'typeorm';
 import { Choice } from './choice.entity';
-import { ChoiceDTO } from './choice.dto';
+import { CreateChoiceDTO, UpdateChoiceDTO } from './choice.dto';
 import { validate } from 'class-validator';
 import { Question } from '../question/question.entity';
 
@@ -16,7 +16,7 @@ export class ChoiceService {
 
 
     //Add a choice
-    async addChoice(dto: ChoiceDTO): Promise<Choice>{
+    async addChoice(dto: CreateChoiceDTO): Promise<Choice>{
         const {question, choice} = dto;
 
         // Create new choice
@@ -55,6 +55,11 @@ export class ChoiceService {
     async getAllChoice(): Promise<Choice[]>{
         const choices = await this.choiceRepository.find();
         return choices;
+    }
+
+    //update a choice
+    async saveChoice(id, choice: UpdateChoiceDTO): Promise<UpdateResult> {
+        return await this.choiceRepository.update(id, choice);
     }
 
     //delete a choice

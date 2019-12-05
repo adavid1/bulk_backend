@@ -70,7 +70,19 @@ export class UserService {
 
     //update a user
     async saveUser(id, user: UpdateUserDTO): Promise<UpdateResult> {
-        return await this.userRepository.update(id, user);
+
+        const {username, email, guest, password, administrator, score} = user;
+
+        // update user
+        let updatedUser = new User();
+        updatedUser.username = username;
+        updatedUser.email = email;
+        updatedUser.guest = guest;
+        updatedUser.password = bcrypt.hashSync(password, 10);
+        updatedUser.administrator = administrator;
+        updatedUser.score = score;
+
+        return await this.userRepository.update(id, updatedUser);
     }
 
     //delete a user

@@ -1,8 +1,9 @@
 import { Post, Res, Body, HttpStatus, Get, Param,
-     NotFoundException, Controller, Delete, UseGuards } from '@nestjs/common';
+     NotFoundException, Controller, Delete, UseGuards, Put } from '@nestjs/common';
 import { ChoiceService } from './choice.service';
-import { ChoiceDTO } from './choice.dto';
+import { CreateChoiceDTO } from './choice.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Choice } from './choice.entity';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('choice')
@@ -12,7 +13,7 @@ export class ChoiceController {
 
     //add a choice
     @Post('/create')
-    async addChoice(@Res() res, @Body() choiceDTO: ChoiceDTO){
+    async addChoice(@Res() res, @Body() choiceDTO: CreateChoiceDTO){
         const choice = await this.choiceService.addChoice(choiceDTO);
         return res.status(HttpStatus.OK).json({
             message: "Choice has been created successfully", choice
@@ -32,6 +33,16 @@ export class ChoiceController {
     async getAllChoice(@Res() res){
         const choices = await this.choiceService.getAllChoice();
         return res.status(HttpStatus.OK).json(choices);
+    }
+
+    //update choice
+    @UseGuards(AuthGuard('jwt'))
+    @Put("/update/:id")
+    async putChoice(@Res() res, @Param("id") id: number, @Body() choice: Choice) {
+        const updatedChoice = await this.choiceService.saveChoice(id, choice);
+        return res.status(HttpStatus.OK).json({
+            message: "choice #" + id + " successfully updated", updatedChoice
+        })
     }
 
     //remove a choice

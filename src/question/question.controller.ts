@@ -1,8 +1,9 @@
 import { Post, Res, Body, HttpStatus, Get, Param,
-     NotFoundException, Controller, Delete, UseGuards } from '@nestjs/common';
+     NotFoundException, Controller, Delete, UseGuards, Put } from '@nestjs/common';
 import { QuestionService } from './question.service';
-import { QuestionDTO } from './question.dto';
+import { CreateQuestionDTO } from './question.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Question } from './question.entity';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('question')
@@ -12,7 +13,7 @@ export class QuestionController {
 
     //add a question
     @Post('/create')
-    async addQuestion(@Res() res, @Body() questionDTO: QuestionDTO){
+    async addQuestion(@Res() res, @Body() questionDTO: CreateQuestionDTO){
         const question = await this.questionService.addQuestion(questionDTO);
         return res.status(HttpStatus.OK).json({
             message: "Question has been created successfully", question
@@ -32,6 +33,15 @@ export class QuestionController {
     async getAllQuestion(@Res() res){
         const questions = await this.questionService.getAllQuestion();
         return res.status(HttpStatus.OK).json(questions);
+    }
+
+    //update question
+    @Put("/update/:id")
+    async putQuestion(@Res() res, @Param("id") id: number, @Body() question: Question) {
+        const updatedQuestion = await this.questionService.saveQuestion(id, question);
+        return res.status(HttpStatus.OK).json({
+            message: "question #" + id + " successfully updated", updatedQuestion
+        })
     }
 
     //remove a question

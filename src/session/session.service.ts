@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Session } from './session.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
 
