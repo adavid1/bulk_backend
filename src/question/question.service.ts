@@ -5,6 +5,7 @@ import { Question } from './question.entity';
 import { CreateQuestionDTO, UpdateQuestionDTO } from './question.dto';
 import { validate } from 'class-validator';
 import { Category } from '../category/category.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class QuestionService {
@@ -12,7 +13,10 @@ export class QuestionService {
         @InjectRepository(Question)
         private questionRepository : Repository<Question>,
         @InjectRepository(Category)
-        private categoryRepository : Repository<Category>) {}
+        private categoryRepository : Repository<Category>,
+        @InjectRepository(User)
+        private userRepository : Repository<User>
+        ) {}
 
 
     //Create a question
@@ -34,6 +38,15 @@ export class QuestionService {
             if(categoryFetched.questions==null)
                 categoryFetched.questions = new Array();
             categoryFetched.questions.push(newQuestion);
+        }
+
+        // Update user
+        if(author){
+            const userFetched = await this.userRepository.
+                                    findOne(author);
+            if(userFetched.questions==null)
+                userFetched.questions = new Array();
+            userFetched.questions.push(newQuestion);
         }
 
         // update question
