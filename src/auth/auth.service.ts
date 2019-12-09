@@ -14,7 +14,6 @@ export class AuthService {
     const user = await this.userService.
                         getUserByName(username);
     let passMatch = bcrypt.compareSync(pass, user.password);
-    console.log("OIUI "+passMatch);
     if (user && passMatch) {
       const { password, ...result } = user;
       return result;

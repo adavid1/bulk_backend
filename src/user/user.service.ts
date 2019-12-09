@@ -34,8 +34,10 @@ export class UserService {
         newUser.email = email;
         newUser.guest = guest;
         newUser.password = bcrypt.hashSync(password, 10);
-        newUser.administrator = administrator;
-        newUser.score = score;
+        if(administrator==null) newUser.administrator = false;
+        else                    newUser.administrator = administrator;
+        if(score==null)         newUser.score = 0;
+        else                    newUser.score = score;
         newUser.questions = questions;
         newUser.categories = categories;
 
