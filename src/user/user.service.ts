@@ -32,8 +32,9 @@ export class UserService {
         let newUser = new User();
         newUser.username = username;
         newUser.email = email;
-        newUser.guest = guest;
         newUser.password = bcrypt.hashSync(password, 10);
+        if(guest==null)         newUser.guest = false;
+        else                    newUser.guest = guest;
         if(administrator==null) newUser.administrator = false;
         else                    newUser.administrator = administrator;
         if(score==null)         newUser.score = 0;
