@@ -54,7 +54,7 @@ export class UserService {
 
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
-        const user = await this.userRepository.findByIds(userId, {relations: ["questions", "categories"]});
+        const user = await this.userRepository.findByIds(userId);
         return user[0];
     }
 
@@ -67,7 +67,7 @@ export class UserService {
 
     //get all users
     async getAllUser(): Promise<User[]>{
-        const users = await this.userRepository.find({relations: ["questions", "categories"]});
+        const users = await this.userRepository.find({relations: ["questions", "categories", "session"]});
         return users;
     }
 

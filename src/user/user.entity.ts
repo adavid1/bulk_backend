@@ -39,6 +39,6 @@ export class User {
                 {cascade: true})
     categories: Category[];
 
-    @ManyToOne(type => Session)
-    sessions: Session[];
+    @ManyToOne(type => Session, session => session.players)
+    session: Session;
 }

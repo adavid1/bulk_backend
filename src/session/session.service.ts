@@ -21,15 +21,15 @@ export class SessionService {
         let session = new Session(); 
         session.dateCreation = new Date();
 
-        const user = await this.userService.getUserById((Number)(createSession.owner));
-        console.log((Number)(createSession.owner));
-        console.log((Number)(createSession.category));
-
         session.players = [];
-        session.players.push(createSession.owner)
+        const user = await this.userService.getUserById(createSession.owner);
+        session.players.push(user);
         session.owner = createSession.owner;
         session.category = createSession.category;
-        return this.sessionRepository.save(session);
+        let sessionSaved = await this.sessionRepository.save(session);
+        user.session = sessionSaved;
+        await this.userService.saveUser(user.userId, user);
+        return sessionSaved;
     }
 
     //Get a single session by its ID
@@ -70,5 +70,20 @@ export class SessionService {
                             filter(x => x.userId !== user.userId);
 
         return await this.sessionRepository.save(session);
+    }
+
+    //delete session by id
+    async deleteSessionById(sessionId){
+        const session = await this.sessionRepository
+                                .findOne(sessionId,
+                                    {relations: ["players"]});
+
+        session.players.forEach(async user => {
+            user.session = null;
+            await this.userService.saveUser(user.userId, user)
+        });  
+        session.players = [];
+        this.sessionRepository.save(session);                     
+        this.sessionRepository.remove(session);
     }
 }

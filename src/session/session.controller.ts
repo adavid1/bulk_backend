@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Res, Body, HttpStatus, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Res, Body, HttpStatus, Param, Put, Delete } from '@nestjs/common';
 import { CreateSessionDTO } from './session.dto';
 import { SessionService } from './session.service';
 import { Session } from './session.entity';
@@ -14,8 +14,15 @@ export class SessionController {
     const newSession = await this.sessionService.
                       createSession(session);
     return res.status(HttpStatus.OK).json({
-        message: "Session has been created successfully", newSession
+        message: "Session has been created successfully"
     })
+  }
+
+  //delete a session
+  @Delete('/delete/:id')
+  async deleteSession(@Res() res,  @Param('id') id){
+    const categories = await this.sessionService.deleteSessionById(id);
+        return res.status(HttpStatus.OK).json({message:"Session #" + id + " successfully deleted"});
   }
 
   @Get('')

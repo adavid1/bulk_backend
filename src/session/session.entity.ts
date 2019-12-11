@@ -13,7 +13,7 @@ export class Session {
     category: Category;
 
     @JoinColumn()
-    @OneToMany(type=>User, player=>player.sessions)
+    @OneToMany(type=>User, player=>player.session)
     players: User[];
 
     @JoinColumn()
