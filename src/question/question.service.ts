@@ -22,13 +22,14 @@ export class QuestionService {
     //Create a question
     async addQuestion(dto: CreateQuestionDTO): Promise<Question>{
 
-        const {category, author, question} = dto;
+        const {category, author, question, hasChoices} = dto;
 
         // create new question
         let newQuestion = new Question();
         newQuestion.category = category;
         newQuestion.question = question;
         newQuestion.author = author;
+        newQuestion.hasChoices = hasChoices;
         newQuestion.choices = [];
 
         // Update category

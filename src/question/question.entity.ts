@@ -18,6 +18,9 @@ export class Question {
     @Column({ length: 100, default: null})
     question:string;
 
+    @Column()
+    hasChoices:boolean;
+
     @JoinColumn()
     @OneToMany(type => Choice, choice => choice.question)
     choices: Choice[];
