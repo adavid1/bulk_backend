@@ -3,6 +3,9 @@ import { Session } from './session.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
+import { create } from 'domain';
+import { Category } from 'src/category/category.entity';
+import { CreateSessionDTO } from './session.dto';
 
 @Injectable()
 export class SessionService {
@@ -14,9 +17,13 @@ export class SessionService {
         ) {}
 
     //Create a session
-    async createSession(createSession: Session): Promise<Session>{
-        createSession.dateCreation = new Date();
-        return this.sessionRepository.save(createSession);
+    async createSession(createSession: CreateSessionDTO): Promise<Session>{
+        let session = new Session(); 
+        session.dateCreation = new Date();
+        session.players = [];
+        session.players.push(createSession.players[0])
+        session.category = createSession.category;
+        return this.sessionRepository.save(session);
     }
 
     //Get a single session by its ID

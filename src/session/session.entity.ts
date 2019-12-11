@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { User } from '../user/user.entity';
 
@@ -9,8 +9,8 @@ export class Session {
     sessionId: number;
 
     @JoinColumn()
-    @OneToMany(type=>Category, category=>category.categoryId)
-    categories: Category[];
+    @ManyToOne(type=>Category, category=>category.categoryId)
+    category: Category;
 
     @JoinColumn()
     @OneToMany(type=>User, user=>user.userId)
