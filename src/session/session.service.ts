@@ -31,14 +31,14 @@ export class SessionService {
         const session = await this.sessionRepository.
                         findByIds(sessionID,
                                 {relations: ["players" ,
-                                             "categories"]})[0];
+                                             "category"]})[0];
         return session;
     }
 
     //get all sessions
     async getAllSession(): Promise<Session[]>{
         const sessions = await this.sessionRepository.
-                        find({relations: ["players", "categories"]});
+                        find({relations: ["players", "category"]});
         return sessions;
     }
 
