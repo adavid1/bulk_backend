@@ -3,5 +3,5 @@ import { Category } from "../category/category.entity";
 
 export class CreateSessionDTO{
     readonly category:Category;
-    readonly players:User[];
+    readonly owner:User;
 }

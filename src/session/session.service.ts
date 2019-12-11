@@ -20,8 +20,14 @@ export class SessionService {
     async createSession(createSession: CreateSessionDTO): Promise<Session>{
         let session = new Session(); 
         session.dateCreation = new Date();
+
+        const user = await this.userService.getUserById((Number)(createSession.owner));
+        console.log((Number)(createSession.owner));
+        console.log((Number)(createSession.category));
+
         session.players = [];
-        session.players.push(createSession.players[0])
+        session.players.push(createSession.owner)
+        session.owner = createSession.owner;
         session.category = createSession.category;
         return this.sessionRepository.save(session);
     }
@@ -30,15 +36,18 @@ export class SessionService {
     async getsessionByID(sessionID): Promise<Session>{
         const session = await this.sessionRepository.
                         findByIds(sessionID,
-                                {relations: ["players" ,
-                                             "category"]})[0];
+                                {relations: ["owner",
+                                            "players" ,
+                                            "category"]})[0];
         return session;
     }
 
     //get all sessions
     async getAllSession(): Promise<Session[]>{
         const sessions = await this.sessionRepository.
-                        find({relations: ["players", "category"]});
+                        find({relations: ["owner",
+                                        "players",
+                                        "category"]});
         return sessions;
     }
 

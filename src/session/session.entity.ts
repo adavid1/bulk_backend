@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { User } from '../user/user.entity';
 
@@ -9,12 +9,16 @@ export class Session {
     sessionId: number;
 
     @JoinColumn()
-    @ManyToOne(type=>Category, category=>category.categoryId)
+    @ManyToOne(type=>Category)
     category: Category;
 
     @JoinColumn()
-    @OneToMany(type=>User, user=>user.userId)
+    @OneToMany(type=>User, player=>player.sessions)
     players: User[];
+
+    @JoinColumn()
+    @OneToOne(type=>User)
+    owner: User;
 
     @Column({nullable:true})
     dateCreation: Date;
