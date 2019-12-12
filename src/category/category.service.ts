@@ -62,7 +62,7 @@ export class CategoryService {
 
     //get all category
     async getAllCategory(): Promise<Category[]>{
-        const categories = await this.categoryRepository.find({relations: ["questions"]});
+        const categories = await this.categoryRepository.find({relations: ["questions", "owner"]});
         return categories;
     }
 
@@ -76,5 +76,10 @@ export class CategoryService {
         const category = await this.categoryRepository
                                 .findByIds(categoryId);
         this.categoryRepository.remove(category);
+    }
+
+    //Get user categories
+    async getCategoriesByUser(userId: number): Promise<Category[]> {
+        return await this.categoryRepository.find({ relations: ["questions", "owner"], where: { owner: { userId: userId } } });
     }
 }

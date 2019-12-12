@@ -9,7 +9,9 @@ import { Category } from './category.entity';
 @Controller('category')
 export class CategoryController {
 
-    constructor(private categoryService: CategoryService){}
+    constructor(
+        private categoryService: CategoryService
+    ){}
 
     //add a category
     @Post('/create')
