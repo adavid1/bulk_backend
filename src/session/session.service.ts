@@ -77,11 +77,7 @@ export class SessionService {
         const session = await this.sessionRepository
                                 .findOne(sessionId,
                                     {relations: ["players"]});
-
-        session.players.forEach(async user => {
-            user.session = null;
-            await this.userService.saveUser(user.userId, user)
-        });  
+        //update current sessions of each user to null
         session.players = [];
         this.sessionRepository.save(session);                     
         this.sessionRepository.remove(session);
