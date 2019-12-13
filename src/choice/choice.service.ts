@@ -68,4 +68,9 @@ export class ChoiceService {
                                 .findByIds(choiceId);
         this.choiceRepository.remove(choice);
     }
+
+    //Get question choices
+    async getChoicesByQuestion(questionId: number): Promise<Choice[]> {
+        return await this.choiceRepository.find({ relations: ["question"], where: { question: { questionId: questionId } } });
+    }
 }

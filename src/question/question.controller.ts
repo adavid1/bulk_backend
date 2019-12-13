@@ -4,12 +4,16 @@ import { QuestionService } from './question.service';
 import { CreateQuestionDTO } from './question.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Question } from './question.entity';
+import { ChoiceService } from '../choice/choice.service';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('question')
 export class QuestionController {
 
-    constructor(private questionService: QuestionService){}
+    constructor(
+        private questionService: QuestionService,
+        private choiceService: ChoiceService
+    ){}
 
     //add a question
     @Post('/create')
@@ -26,6 +30,14 @@ export class QuestionController {
         const question = await this.questionService.getQuestionById(questionId);
         if(!question) throw new NotFoundException('Question does not exist');
         return res.status(HttpStatus.OK).json(question);
+    }
+
+    //fetch question choices
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/:questionId/choices')
+    async getQuestionChoices(@Res() res, @Param('questionId') questionId) {
+        const choices = await this.choiceService.getChoicesByQuestion(questionId);
+        return res.status(HttpStatus.OK).json(choices);
     }
 
     //fetch all questions
