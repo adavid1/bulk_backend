@@ -4,13 +4,15 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDTO } from './category.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Category } from './category.entity';
+import { QuestionService } from '../question/question.service';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('category')
 export class CategoryController {
 
     constructor(
-        private categoryService: CategoryService
+        private categoryService: CategoryService,
+        private questionService: QuestionService
     ){}
 
     //add a category
@@ -35,6 +37,14 @@ export class CategoryController {
     async getAllCategory(@Res() res){
         const categories = await this.categoryService.getAllCategory();
         return res.status(HttpStatus.OK).json(categories);
+    }
+
+    //fetch category questions
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/:categoryId/questions')
+    async getCategoryQuestions(@Res() res, @Param('categoryId') categoryId) {
+        const questions = await this.questionService.getQuestionsByCategory(categoryId);
+        return res.status(HttpStatus.OK).json(questions);
     }
 
     //update category
