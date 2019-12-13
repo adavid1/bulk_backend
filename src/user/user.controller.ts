@@ -5,12 +5,14 @@ import { CreateUserDTO, UpdateUserDTO } from './user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { CategoryService } from '../category/category.service';
+import { QuestionService } from '../question/question.service';
 
 @Controller('user')
 export class UserController {
     constructor(
         private userService: UserService,
-        private categoryService: CategoryService
+        private categoryService: CategoryService,
+        private questionService: QuestionService
     ){}
 
     //add a user
@@ -37,6 +39,14 @@ export class UserController {
     async getUserCategories(@Res() res, @Param('userId') userId) {
         const categories = await this.categoryService.getCategoriesByUser(userId);
         return res.status(HttpStatus.OK).json(categories);
+    }
+
+    //fetch user questions
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/:userId/questions')
+    async getUserQuestions(@Res() res, @Param('userId') userId) {
+        const questions = await this.questionService.getQuestionsByUser(userId);
+        return res.status(HttpStatus.OK).json(questions);
     }
 
     //fetch all users

@@ -86,4 +86,9 @@ export class QuestionService {
                                 .findByIds(questionId);
         this.questionRepository.remove(question);
     }
+
+    //Get user questions
+    async getQuestionsByUser(userId: number): Promise<Question[]> {
+        return await this.questionRepository.find({ relations: ["category", "author"], where: { author: { userId: userId } } });
+    }
 }
