@@ -89,11 +89,11 @@ export class QuestionService {
 
     //Get user questions
     async getQuestionsByUser(userId: number): Promise<Question[]> {
-        return await this.questionRepository.find({ relations: ["category", "author"], where: { author: { userId: userId } } });
+        return await this.questionRepository.find({ relations: ["category", "author", "choices"], where: { author: { userId: userId } } });
     }
 
     //Get category questions
     async getQuestionsByCategory(categoryId: number): Promise<Question[]> {
-        return await this.questionRepository.find({ relations: ["category", "author"], where: { category: { categoryId: categoryId } } });
+        return await this.questionRepository.find({ relations: ["category", "author", "choices"], where: { category: { categoryId: categoryId } } });
     }
 }
