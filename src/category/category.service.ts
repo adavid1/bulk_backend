@@ -33,6 +33,7 @@ export class CategoryService {
         newCategory.owner = owner;
         newCategory.isPublic = isPublic;
         newCategory.language = language;
+        newCategory.questions = [];
 
         // Update user
         if(owner){
@@ -49,6 +50,7 @@ export class CategoryService {
             throw new HttpException({message: 'Input data validation failed', _errors}, HttpStatus.BAD_REQUEST);
         } else {
             const savedCategory = await this.categoryRepository.save(newCategory);
+            console.log("savedcategory");
             return savedCategory;
         }
     }

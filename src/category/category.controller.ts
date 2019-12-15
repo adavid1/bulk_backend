@@ -19,6 +19,7 @@ export class CategoryController {
     @Post('/create')
     async addCategory(@Res() res, @Body() categoryDTO: CreateCategoryDTO){
         const category = await this.categoryService.addCategory(categoryDTO);
+        console.log("return "+category);
         return res.status(HttpStatus.OK).json({
             message: "Category has been created successfully", category
         })

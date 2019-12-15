@@ -25,7 +25,7 @@ export class UserController {
     }
 
     //fetch a user by Id
-    @UseGuards(AuthGuard('jwt'))
+    //@UseGuards(AuthGuard('jwt'))
     @Get('/:userId')
     async getUser(@Res() res, @Param('userId') userId){
         const user = await this.userService.getUserById(userId);
@@ -50,7 +50,7 @@ export class UserController {
     }
 
     //fetch all users
-    @UseGuards(AuthGuard('jwt'))
+    //@UseGuards(AuthGuard('jwt'))
     @Get('')
     async getAllUser(@Res() res){
         const users = await this.userService.getAllUser();
