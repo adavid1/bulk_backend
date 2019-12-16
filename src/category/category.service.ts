@@ -76,7 +76,7 @@ export class CategoryService {
     //delete a category
     async deleteCategoryById(categoryId){
         const category = await this.categoryRepository
-                                .findByIds(categoryId);
+                                .findOne(categoryId);
         this.categoryRepository.remove(category);
     }
 

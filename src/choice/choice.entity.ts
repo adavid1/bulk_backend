@@ -7,7 +7,7 @@ export class Choice {
     @PrimaryGeneratedColumn()
     choiceId: number;
 
-    @ManyToOne(type => Question, question => question.choices)
+    @ManyToOne(type => Question, question => question.choices, {onDelete:"CASCADE"})
     question: Question;
 
     @Column({ length: 100, nullable:true })

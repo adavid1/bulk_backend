@@ -9,7 +9,7 @@ export class Question {
     @PrimaryGeneratedColumn()
     questionId: number;
 
-    @ManyToOne(type => Category, category => category.questions)
+    @ManyToOne(type => Category, category => category.questions, {onDelete:"CASCADE"})
     category: Category;
 
     @ManyToOne(type => User, user => user.questions)
