@@ -82,6 +82,6 @@ export class CategoryService {
 
     //Get user categories
     async getCategoriesByUser(userId: number): Promise<Category[]> {
-        return await this.categoryRepository.find({ relations: ["questions", "owner"], where: { owner: { userId: userId } } });
+        return await this.categoryRepository.find({ relations: ["questions", "owner", "choices"], where: { owner: { userId: userId } } });
     }
 }

@@ -10,6 +10,6 @@ export class Choice {
     @ManyToOne(type => Question, question => question.choices, {onDelete:"CASCADE"})
     question: Question;
 
-    @Column({ length: 100, nullable:true })
+    @Column({ length: 100})
     choice:string;
 }
