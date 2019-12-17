@@ -20,18 +20,16 @@ export class SessionService {
     async createSession(createSession: CreateSessionDTO): Promise<Session>{
         let session = new Session(); 
         session.dateCreation = new Date();
-
         session.players = [];
-        const user = await this.userService.getUserById(createSession.owner);
-        session.players.push(user);
+        await this.userService.getUserById(createSession.owner).
+        then(user=>{
+            session.players.push(user);
+            user.session = session;
+            this.userService.saveUser(user.userId, user);
+        });
         session.owner = createSession.owner;
         session.category = createSession.category;
-        let sessionSaved = await this.sessionRepository.save(session);
-        console.log("user"+user);
-        console.log(createSession.owner);
-        user.session = sessionSaved;
-        await this.userService.saveUser(user.userId, user);
-        return sessionSaved;
+        return await this.sessionRepository.save(session);
     }
 
     //Get a single session by its ID

@@ -54,7 +54,7 @@ export class UserService {
 
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
-        const user = await this.userRepository.findOne(userId);
+        const user = await this.userRepository.findOne(userId, {relations:['session']});
         return user;
     }
 
