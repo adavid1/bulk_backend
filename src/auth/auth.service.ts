@@ -13,7 +13,10 @@ export class AuthService {
       
     const user = await this.userService.
                         getUserByName(username);
-    let passMatch = bcrypt.compareSync(pass, user.password);
+    console.log("mmh:"+pass);
+    console.log("non:"+user.password);
+    let passMatch = await bcrypt.compareSync(pass, user.password);
+    console.log("passMatch:"+passMatch)
     if (user && passMatch) {
       const { password, ...result } = user;
       return result;

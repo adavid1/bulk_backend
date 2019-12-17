@@ -54,8 +54,8 @@ export class UserService {
 
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
-        const user = await this.userRepository.findByIds(userId);
-        return user[0];
+        const user = await this.userRepository.findOne(userId);
+        return user;
     }
 
     //Get a single user by its name
@@ -74,14 +74,13 @@ export class UserService {
     //update a user
     async saveUser(id, user: UpdateUserDTO): Promise<UpdateResult> {
 
-        const {username, email, guest, password, administrator, score} = user;
+        const {username, email, guest, administrator, score} = user;
 
         // update user
         let updatedUser = new User();
         updatedUser.username = username;
         updatedUser.email = email;
         updatedUser.guest = guest;
-        updatedUser.password = bcrypt.hashSync(password, 10);
         updatedUser.administrator = administrator;
         updatedUser.score = score;
 

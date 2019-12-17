@@ -14,7 +14,7 @@ export class SessionController {
     const newSession = await this.sessionService.
                       createSession(session);
     return res.status(HttpStatus.OK).json({
-        message: "Session has been created successfully"
+        sessionId: newSession.sessionId
     })
   }
 

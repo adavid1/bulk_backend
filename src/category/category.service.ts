@@ -50,7 +50,6 @@ export class CategoryService {
             throw new HttpException({message: 'Input data validation failed', _errors}, HttpStatus.BAD_REQUEST);
         } else {
             const savedCategory = await this.categoryRepository.save(newCategory);
-            console.log("savedcategory");
             return savedCategory;
         }
     }
@@ -82,6 +81,6 @@ export class CategoryService {
 
     //Get user categories
     async getCategoriesByUser(userId: number): Promise<Category[]> {
-        return await this.categoryRepository.find({ relations: ["questions", "owner", "choices"], where: { owner: { userId: userId } } });
+        return await this.categoryRepository.find({ relations: ["questions", "owner"], where: { owner: { userId: userId } } });
     }
 }

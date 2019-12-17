@@ -27,6 +27,8 @@ export class SessionService {
         session.owner = createSession.owner;
         session.category = createSession.category;
         let sessionSaved = await this.sessionRepository.save(session);
+        console.log("user"+user);
+        console.log(createSession.owner);
         user.session = sessionSaved;
         await this.userService.saveUser(user.userId, user);
         return sessionSaved;

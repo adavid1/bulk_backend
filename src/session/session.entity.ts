@@ -9,11 +9,11 @@ export class Session {
     sessionId: number;
 
     @JoinColumn()
-    @ManyToOne(type=>Category)
+    @ManyToOne(type=>Category, {cascade:true})
     category: Category;
 
     @JoinColumn()
-    @OneToMany(type=>User, player=>player.session)
+    @OneToMany(type=>User, player=>player.session, {cascade:true})
     players: User[];
 
     @JoinColumn()
