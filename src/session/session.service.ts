@@ -79,7 +79,7 @@ export class SessionService {
                                     {relations: ["players"]});
         //update current sessions of each user to null
         session.players = [];
-        this.sessionRepository.save(session);                     
-        this.sessionRepository.remove(session);
+        await this.sessionRepository.save(session);                     
+        await this.sessionRepository.remove(session);
     }
 }
