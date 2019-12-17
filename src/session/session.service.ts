@@ -53,10 +53,15 @@ export class SessionService {
 
     //Add a user to a session
     async addUserToSession(userId, sessionId): Promise<Session>{
-        const session = await this.getsessionByID(sessionId);
-        const user = await this.userService.getUserById(userId);
-
-        session.players.push(user);
+        const session = await this.sessionRepository
+                                .findOne(sessionId,
+                                    {relations: ["players"]});
+        await this.userService.getUserById(userId).
+        then(user=>{
+            session.players.push(user);
+            user.session = session;
+            this.userService.saveUser(user.userId, user);
+        });
 
         return await this.sessionRepository.save(session);
     }

@@ -17,10 +17,7 @@ export class UserService {
     async addUser(dto: CreateUserDTO): Promise<User>{
         // check uniqueness of username/email
         const {username, email, guest, password, administrator, score, questions, categories} = dto;
-        
-        console.log(username);
 
-        
         const user = await this.userRepository.
                     findOne({ username: username, email: email });
         if (user) {

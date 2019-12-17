@@ -20,16 +20,19 @@ export class SessionGateway implements  OnGatewayConnection,
 
     
     @SubscribeMessage('joinSession')
-    async onJoinSession(clientcSocket, clientId, sessionId){
-
+    async onJoinSession(clientSocket, data){
         //add client to session
         try{
-            this.sessionService.addUserToSession(clientId, sessionId);
-            clientcSocket.broadcast.
-                emit('joinSession', "true");
+            const userId=data[0];
+            const sessionId=data[1];
+
+            
+            this.sessionService.addUserToSession(userId, sessionId);
+            return true;
+            //clientSocket.broadcast.emit('joinSession', "true");
         }catch(e){
-            clientcSocket.broadcast.
-                emit('joinSession', "false");
+            return false;
+            //clientSocket.broadcast.emit('joinSession', "false");
         }
     }
 
