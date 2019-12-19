@@ -11,6 +11,9 @@ export class CreateUserDTO{
     readonly questions: Question[];
     readonly categories: Category[];
 }
+export class CreateUserGuestDTO{
+    readonly username:string;
+}
 
 export class UpdateUserDTO{
     readonly username:string;

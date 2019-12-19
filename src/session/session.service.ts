@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { create } from 'domain';
 import { Category } from 'src/category/category.entity';
 import { CreateSessionDTO } from './session.dto';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class SessionService {
@@ -35,10 +36,10 @@ export class SessionService {
     //Get a single session by its ID
     async getsessionByID(sessionID): Promise<Session>{
         const session = await this.sessionRepository.
-                        findByIds(sessionID,
+                        findOne(sessionID,
                                 {relations: ["owner",
                                             "players" ,
-                                            "category"]})[0];
+                                            "category"]});
         return session;
     }
 
@@ -52,18 +53,21 @@ export class SessionService {
     }
 
     //Add a user to a session
-    async addUserToSession(userId, sessionId): Promise<Session>{
+    async addUserToSession(userId, sessionId): Promise<User>{
         const session = await this.sessionRepository
                                 .findOne(sessionId,
                                     {relations: ["players"]});
+        let user;
         await this.userService.getUserById(userId).
-        then(user=>{
-            session.players.push(user);
+        then(result=>{
+            user=result;
+            session.players.push(result);
             user.session = session;
-            this.userService.saveUser(user.userId, user);
+            this.userService.saveUser(result.userId, result);
         });
 
-        return await this.sessionRepository.save(session);
+        await this.sessionRepository.save(session);
+        return user;
     }
 
     //Remove a user to a session
@@ -82,6 +86,14 @@ export class SessionService {
         const session = await this.sessionRepository
                                 .findOne(sessionId,
                                     {relations: ["players"]});
+
+        //delete users that are guests
+        session.players.forEach(async player => {
+            if(player.guest){
+                await this.userService.deleteUserById(player.userId)
+            }
+        });
+
         //update current sessions of each user to null
         session.players = [];
         await this.sessionRepository.save(session);                     

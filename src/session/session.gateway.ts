@@ -9,13 +9,13 @@ export class SessionGateway implements  OnGatewayConnection,
     constructor(private readonly sessionService: SessionService) {}
     @WebSocketServer() server;
 
-    async handleConnection(player:User){
+    async handleConnection(sessionId:any){
         // Notify connected clients of current users
-        this.server.emit('playerAdd', player.username);
+        //this.server.emit('playerAdd', player.username);
     }
-    async handleDisconnect(player:User){
+    async handleDisconnect(sessionId:any){
         // Notify connected clients of current users
-        this.server.emit('playerRemove', player.username);
+        //this.server.emit('playerRemove', player.username);
     }
 
     
@@ -25,13 +25,11 @@ export class SessionGateway implements  OnGatewayConnection,
         try{
             const userId=data[0];
             const sessionId=data[1];
-
+            clientSocket.join(sessionId);
+            clientSocket.broadcast.to(sessionId).emit('joinSession', userId);
             
-            this.sessionService.addUserToSession(userId, sessionId);
-            return true;
-            //clientSocket.broadcast.emit('joinSession', "true");
         }catch(e){
-            return false;
+            //return false;
             //clientSocket.broadcast.emit('joinSession', "false");
         }
     }

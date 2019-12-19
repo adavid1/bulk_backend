@@ -1,7 +1,7 @@
 import { Controller, Post, Res, Body, HttpStatus, Get,
     Param, NotFoundException, Delete, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDTO, UpdateUserDTO } from './user.dto';
+import { CreateUserDTO, UpdateUserDTO, CreateUserGuestDTO } from './user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { CategoryService } from '../category/category.service';
@@ -22,6 +22,13 @@ export class UserController {
         return res.status(HttpStatus.OK).json({
             message: "User has been created successfully", user
         })
+    }
+    
+    //add a user
+    @Post('/createguest')
+    async addUserGuest(@Res() res, @Body() createUserGuestDTO: CreateUserGuestDTO){
+        const user = await this.userService.addUserGuest(createUserGuestDTO);
+        return res.status(HttpStatus.OK).json(user)
     }
 
     //fetch a user by Id

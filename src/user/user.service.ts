@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from './user.entity';
-import { CreateUserDTO, UpdateUserDTO } from './user.dto';
+import { CreateUserDTO, UpdateUserDTO, CreateUserGuestDTO } from './user.dto';
 import { validate } from 'class-validator';
 import * as bcrypt from "bcryptjs";
 
@@ -38,6 +38,35 @@ export class UserService {
         else                    newUser.score = score;
         newUser.questions = questions;
         newUser.categories = categories;
+
+        const errors = await validate(newUser);
+        if (errors.length > 0) {
+            const _errors = {username: 'User input is not valid.'};
+            throw new HttpException({message: 'Input data validation failed', _errors}, HttpStatus.BAD_REQUEST);
+        } else {
+            const savedUser = await this.userRepository.save(newUser);
+            return savedUser;
+        }
+    }
+
+    //Create a user guest
+    async addUserGuest(dto: CreateUserGuestDTO): Promise<User>{
+        // check uniqueness of username/email
+        const {username} = dto;
+
+        const user = await this.userRepository.
+                    findOne({ username: username });
+        if (user) {
+            const errors = {username: 'Username already taken.'};
+            throw new HttpException({message: 'Input data validation failed', errors}, HttpStatus.BAD_REQUEST);
+        }
+
+        // create new user
+        let newUser = new User();
+        newUser.username = username;
+        newUser.guest = true;
+        newUser.administrator = false;
+        newUser.score = 0;
 
         const errors = await validate(newUser);
         if (errors.length > 0) {
@@ -87,7 +116,7 @@ export class UserService {
     //delete a user
     async deleteUserById(userId){
         const user = await this.userRepository
-                                .findByIds(userId);
+                                .findOne(userId);
         this.userRepository.remove(user);
     }
 }
