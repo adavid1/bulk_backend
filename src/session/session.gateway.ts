@@ -22,28 +22,28 @@ export class SessionGateway implements  OnGatewayConnection,
     @SubscribeMessage('joinSession')
     async onJoinSession(clientSocket, data){
         //add client to session
-        try{
-            const userId=data[0];
-            const sessionId=data[1];
-            clientSocket.join(sessionId);
-            clientSocket.broadcast.to(sessionId).emit('joinSession', userId);
-            
-        }catch(e){
-            //return false;
-            //clientSocket.broadcast.emit('joinSession', "false");
-        }
+        const userId=data[0];
+        const sessionId=data[1];
+        clientSocket.join(sessionId);
+        clientSocket.broadcast.
+            to(sessionId).emit('joinSession', userId);
     }
 
-    @SubscribeMessage('exitSession')
-    async onExitSession(clientcSocket, clientId, sessionId){
-        //add client to session
-        try{
-            this.sessionService.removeUserToSession(clientId, sessionId);
-            clientcSocket.broadcast.
-                emit('joinSession', "true");
-        }catch(e){
-            clientcSocket.broadcast.
-                emit('joinSession', "false");
-        }
+    @SubscribeMessage('quitSession')
+    async onQuitSession(clientSocket, data){
+        const userId=data[0];
+        const sessionId=data[1];
+        clientSocket.broadcast.
+            to(sessionId).emit('quitSession', userId);
+
+        clientSocket.leave(sessionId);
+    }
+
+    @SubscribeMessage('killSession')
+    async onKillSession(clientSocket, sessionId){
+        clientSocket.broadcast.
+            to(sessionId).emit('killSession', sessionId);
+
+        clientSocket.leave(sessionId);
     }
 }

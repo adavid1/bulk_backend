@@ -27,6 +27,13 @@ export class SessionController {
 
     return res.status(HttpStatus.OK).json(userRes.userId)
   }
+  @Put('/removeuser/:id')
+  async removeUserToSession(@Res() res, @Body() user: User, @Param('id') id){
+    const userRes = await this.sessionService.
+                      removeUserToSession(user, id);
+
+    return res.status(HttpStatus.OK).json(userRes.userId)
+  }
 
   //get a session by id
   @Get('/:id')

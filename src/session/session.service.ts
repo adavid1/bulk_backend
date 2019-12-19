@@ -71,14 +71,25 @@ export class SessionService {
     }
 
     //Remove a user to a session
-    async removeUserToSession(userId, sessionId): Promise<Session>{
-        const session = await this.getsessionByID(sessionId);
-        const user = await this.userService.getUserById(userId);
-
-        session.players = session.players.
-                            filter(x => x.userId !== user.userId);
-
-        return await this.sessionRepository.save(session);
+    async removeUserToSession(userId, sessionId): Promise<User>{
+        const session = await this.sessionRepository
+                                .findOne(sessionId,
+                                    {relations: ["players"]});
+        let user;
+        await this.userService.getUserById(userId).
+        then(async result=>{
+            user=result.userId;
+            session.players = session.players.
+                            filter(x => x.userId !== result.userId);
+            result.session = session;
+            this.userService.saveUser(result.userId, result);
+            if(result.guest){
+                await this.userService.deleteUserById(result.userId)
+            }
+        });
+        
+        await this.sessionRepository.save(session);
+        return user;
     }
 
     //delete session by id
