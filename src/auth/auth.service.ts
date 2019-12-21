@@ -14,7 +14,7 @@ export class AuthService {
     const user = await this.userService.
                         getUserByName(username);
     let passMatch = bcrypt.compareSync(pass, user.password);
-    if (user && passMatch) {
+    if (user && passMatch && !user.guest) {
       const { password, ...result } = user;
       return result;
     }
