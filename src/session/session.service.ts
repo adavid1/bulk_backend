@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Session } from './session.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { create } from 'domain';
 import { Category } from 'src/category/category.entity';
 import { CreateSessionDTO } from './session.dto';
 import { User } from '../user/user.entity';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class SessionService {
@@ -24,12 +25,17 @@ export class SessionService {
         session.players = [];
         await this.userService.getUserById(createSession.owner).
         then(user=>{
-            session.players.push(user);
+            //if the user has already a session : stop here
+            if(user.session!=null){
+                throw new HttpException('Already has session', HttpStatus.FORBIDDEN);
+            }
+            session.owner = user;
             user.session = session;
+            session.category = createSession.category;
             this.userService.saveUser(user.userId, user);
-        });
-        session.owner = createSession.owner;
-        session.category = createSession.category;
+        }).catch(error => {throw new
+                            HttpException(error,
+                             HttpStatus.FORBIDDEN)});
         return await this.sessionRepository.save(session);
     }
 
@@ -60,11 +66,16 @@ export class SessionService {
         let user;
         await this.userService.getUserById(userId).
         then(result=>{
+            //if the user has already a session : stop here
+            if(result.session!=null)
+                throw new HttpException('Already has session', HttpStatus.FORBIDDEN);
             user=result;
             session.players.push(result);
             user.session = session;
             this.userService.saveUser(result.userId, result);
-        });
+        }).catch(error => {throw new
+            HttpException(error,
+             HttpStatus.FORBIDDEN)});;
 
         await this.sessionRepository.save(session);
         return user;
@@ -107,6 +118,7 @@ export class SessionService {
 
         //update current sessions of each user to null
         session.players = [];
+        session.owner = null;
         await this.sessionRepository.save(session);                     
         await this.sessionRepository.remove(session);
     }

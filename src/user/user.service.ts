@@ -100,7 +100,8 @@ export class UserService {
     //update a user
     async saveUser(id, user: UpdateUserDTO): Promise<UpdateResult> {
 
-        const {username, email, guest, administrator, score} = user;
+        const {username, email, guest,
+                administrator, score, session} = user;
 
         // update user
         let updatedUser = new User();
@@ -109,6 +110,7 @@ export class UserService {
         updatedUser.guest = guest;
         updatedUser.administrator = administrator;
         updatedUser.score = score;
+        updatedUser.session = session;
 
         return await this.userRepository.update(id, updatedUser);
     }

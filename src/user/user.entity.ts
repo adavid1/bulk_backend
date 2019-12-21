@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, PrimaryColumn, Unique, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, PrimaryColumn, Unique, ManyToOne, OneToOne } from 'typeorm';
 import {Length, IsEmail, IsDate} from "class-validator";
 import { Question } from '../question/question.entity';
 import { Category } from '../category/category.entity';
@@ -39,6 +39,6 @@ export class User {
                 {cascade: true})
     categories: Category[];
 
-    @ManyToOne(type => Session, session => session.players)
+    @ManyToOne(type => Session)
     session: Session;
 }

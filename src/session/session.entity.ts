@@ -17,7 +17,7 @@ export class Session {
     players: User[];
 
     @JoinColumn()
-    @OneToOne(type=>User)
+    @OneToOne(type=>User, owner=>owner.session, {cascade:true})
     owner: User;
 
     @Column({nullable:true})
