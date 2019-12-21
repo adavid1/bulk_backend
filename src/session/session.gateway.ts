@@ -18,7 +18,7 @@ export class SessionGateway implements  OnGatewayConnection,
         //this.server.emit('playerRemove', player.username);
     }
 
-    
+    //pre-game
     @SubscribeMessage('joinSession')
     async onJoinSession(clientSocket, data){
         //add client to session
@@ -45,5 +45,22 @@ export class SessionGateway implements  OnGatewayConnection,
             to(sessionId).emit('killSession', sessionId);
 
         clientSocket.leave(sessionId);
+    }
+
+
+    //game
+    @SubscribeMessage('joinGame')
+    async onJoinGame(clientSocket, sessionId){
+        clientSocket.broadcast.
+            to(sessionId).emit('joinGame', sessionId);
+    }
+
+    @SubscribeMessage('sendChoice')
+    async onSendChoice(clientSocket, data){
+        const sessionId = data.sessionId;
+        const choices = data.choices;
+        console.log(choices);
+        //clientSocket.broadcast.
+        //    to(sessionId).emit('joinGame', sessionId);
     }
 }

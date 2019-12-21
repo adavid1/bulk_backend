@@ -41,4 +41,6 @@ export class User {
 
     @ManyToOne(type => Session)
     session: Session;
+    @ManyToOne(type => Session)
+    sessionHost: Session;
 }

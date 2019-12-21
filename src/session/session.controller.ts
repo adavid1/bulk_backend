@@ -12,7 +12,7 @@ export class SessionController {
 
   //create a session
   @Post('/create')
-  async addSession(@Res() res, @Body() session: Session){
+  async addSession(@Res() res, @Body() session: CreateSessionDTO){
     const newSession = await this.sessionService.
                       createSession(session);
     return res.status(HttpStatus.OK).json({

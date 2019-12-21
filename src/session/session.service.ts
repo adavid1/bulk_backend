@@ -8,6 +8,7 @@ import { Category } from 'src/category/category.entity';
 import { CreateSessionDTO } from './session.dto';
 import { User } from '../user/user.entity';
 import { throwError } from 'rxjs';
+import { sequenceExpression } from '@babel/types';
 
 @Injectable()
 export class SessionService {
@@ -22,16 +23,18 @@ export class SessionService {
     async createSession(createSession: CreateSessionDTO): Promise<Session>{
         let session = new Session(); 
         session.dateCreation = new Date();
-        session.players = [];
         await this.userService.getUserById(createSession.owner).
         then(user=>{
             //if the user has already a session : stop here
-            if(user.session!=null){
+            if(user.sessionHost!=null){
                 throw new HttpException('Already has session', HttpStatus.FORBIDDEN);
             }
+            user.sessionHost = session;
             session.owner = user;
-            user.session = session;
+            
             session.category = createSession.category;
+            session.players = [];
+
             this.userService.saveUser(user.userId, user);
         }).catch(error => {throw new
                             HttpException(error,
@@ -107,7 +110,7 @@ export class SessionService {
     async deleteSessionById(sessionId){
         const session = await this.sessionRepository
                                 .findOne(sessionId,
-                                    {relations: ["players"]});
+                                    {relations: ["players","owner"]});
 
         //delete users that are guests
         session.players.forEach(async player => {
@@ -117,6 +120,9 @@ export class SessionService {
         });
 
         //update current sessions of each user to null
+        session.owner.sessionHost=null;
+        await this.userService.saveUser(session.owner.userId,
+                                        session.owner);
         session.players = [];
         session.owner = null;
         await this.sessionRepository.save(session);                     

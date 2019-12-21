@@ -80,7 +80,7 @@ export class UserService {
 
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
-        const user = await this.userRepository.findOne(userId, {relations:['session']});
+        const user = await this.userRepository.findOne(userId, {relations:['session','sessionHost']});
         return user;
     }
 
@@ -93,7 +93,7 @@ export class UserService {
 
     //get all users
     async getAllUser(): Promise<User[]>{
-        const users = await this.userRepository.find({relations: ["questions", "categories", "session"]});
+        const users = await this.userRepository.find({relations: ["questions", "categories", "session","sessionHost"]});
         return users;
     }
 
@@ -101,7 +101,7 @@ export class UserService {
     async saveUser(id, user: UpdateUserDTO): Promise<UpdateResult> {
 
         const {username, email, guest,
-                administrator, score, session} = user;
+                administrator, score, session, sessionHost} = user;
 
         // update user
         let updatedUser = new User();
@@ -111,6 +111,8 @@ export class UserService {
         updatedUser.administrator = administrator;
         updatedUser.score = score;
         updatedUser.session = session;
+        updatedUser.sessionHost = sessionHost;
+
 
         return await this.userRepository.update(id, updatedUser);
     }

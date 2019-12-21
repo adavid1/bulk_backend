@@ -23,7 +23,7 @@ export class UpdateUserDTO{
     readonly administrator:boolean;
     readonly score:number;
     readonly session:Session;
-
+    readonly sessionHost:Session;
 }
 
 export class LoginUserDTO{
