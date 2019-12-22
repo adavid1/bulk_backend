@@ -17,6 +17,11 @@ export class SessionGateway implements  OnGatewayConnection,
         // Notify connected clients of current users
         //this.server.emit('playerRemove', player.username);
     }
+    @SubscribeMessage('connect')
+    async onConnect(clientSocket, sessionId){
+        //add client to session
+        clientSocket.join(sessionId);
+    }
 
     //pre-game
     @SubscribeMessage('joinSession')
@@ -55,12 +60,22 @@ export class SessionGateway implements  OnGatewayConnection,
             to(sessionId).emit('joinGame', sessionId);
     }
 
-    @SubscribeMessage('sendChoice')
+    //TODO maybe has to rejoin room with new socket
+
+    @SubscribeMessage('sendChoices')
     async onSendChoice(clientSocket, data){
         const sessionId = data.sessionId;
         const choices = data.choices;
-        console.log(choices);
-        //clientSocket.broadcast.
-        //    to(sessionId).emit('joinGame', sessionId);
+        clientSocket.broadcast.
+            to(sessionId).emit('sendChoices', choices);
+    }
+
+    @SubscribeMessage('sendResponse')
+    async onSendResponse(clientSocket, data){
+        const sessionId = data.sessionId;
+        const response = data.response;
+        console.log("response : "+response);
+        clientSocket.broadcast.
+            to(sessionId).emit('sendResponse', response);
     }
 }
