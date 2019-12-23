@@ -22,6 +22,11 @@ export class SessionGateway implements  OnGatewayConnection,
         //add client to session
         clientSocket.join(sessionId);
     }
+    @SubscribeMessage('disconnect')
+    async onDisconnect(clientSocket, sessionId){
+        //add client to session
+        clientSocket.leave(sessionId);
+    }
 
     //pre-game
     @SubscribeMessage('joinSession')
@@ -74,8 +79,31 @@ export class SessionGateway implements  OnGatewayConnection,
     async onSendResponse(clientSocket, data){
         const sessionId = data.sessionId;
         const response = data.response;
-        console.log("response : "+response);
         clientSocket.broadcast.
             to(sessionId).emit('sendResponse', response);
+    }
+
+    @SubscribeMessage('sendResult')
+    async onSendResult(clientSocket, data){
+        const sessionId = data.sessionId;
+        const result = data.result;
+        clientSocket.broadcast.
+            to(sessionId).emit('sendResult', result);
+    }
+
+    @SubscribeMessage('sendEndOfQuestion')
+    async onSendEndOfQuestion(clientSocket, sessionId){
+        clientSocket.broadcast.
+            to(sessionId).emit('sendEndOfQuestion', sessionId);
+    }
+
+    @SubscribeMessage('sendScore')
+    async onScore(clientSocket, data){
+        const sessionId = data.sessionId;
+        const username = data.username;
+        const score = data.score;
+        clientSocket.broadcast.
+            to(sessionId).emit('sendScore',
+            {username: username, score:score});
     }
 }
