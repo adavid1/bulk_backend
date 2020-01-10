@@ -74,6 +74,18 @@ export class UserController {
         })
     }
 
+    //set user's color
+    @UseGuards(AuthGuard('jwt'))
+    @Put("/setcolor/:id")
+    async setUserColor(@Res() res, @Body() user: User, @Param('id') id){
+        const updatedUser = await this.userService.
+                           setUserColor(user, id);
+    
+        return res.status(HttpStatus.OK).json({
+        message: "user #" + id + " successfully updated", updatedUser
+        })
+    }
+
     //remove a user
     @UseGuards(AuthGuard('jwt'))
     @Delete('/delete/:id')

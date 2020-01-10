@@ -14,6 +14,7 @@ export class CreateUserDTO{
 }
 export class CreateUserGuestDTO{
     readonly username:string;
+    readonly color:string;
 }
 
 export class UpdateUserDTO{
@@ -22,6 +23,7 @@ export class UpdateUserDTO{
     readonly guest:boolean;
     readonly administrator:boolean;
     readonly score:number;
+    readonly color:string;
     readonly session:Session;
     readonly sessionHost:Session;
 }

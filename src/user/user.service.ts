@@ -52,7 +52,7 @@ export class UserService {
     //Create a user guest
     async addUserGuest(dto: CreateUserGuestDTO): Promise<User>{
         // check uniqueness of username/email
-        const {username} = dto;
+        const {username, color} = dto;
 
         const user = await this.userRepository.
                     findOne({ username: username });
@@ -67,6 +67,7 @@ export class UserService {
         newUser.guest = true;
         newUser.administrator = false;
         newUser.score = 0;
+        newUser.color = color;
 
         const errors = await validate(newUser);
         if (errors.length > 0) {
@@ -81,7 +82,27 @@ export class UserService {
     //Get a single user by its Id
     async getUserById(userId): Promise<User>{
         const user = await this.userRepository.findOne(userId, {relations:['session','sessionHost']});
+        console.log(user);
         return user;
+    }
+
+    //Set user color
+    async setUserColor(param, userId): Promise<UpdateResult>{
+
+        const user = await this.userRepository.findOne(userId, {relations:['session','sessionHost']});
+
+        // update user
+        let updatedUser = new User();
+        updatedUser.username = user.username;
+        updatedUser.email = user.email;
+        updatedUser.guest = user.guest;
+        updatedUser.administrator = user.administrator;
+        updatedUser.score = user.score;
+        updatedUser.color = param.color;
+        updatedUser.session = user.session;
+        updatedUser.sessionHost = user.sessionHost;
+
+        return await this.userRepository.update(userId, updatedUser);
     }
 
     //Get a single user by its name

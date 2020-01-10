@@ -29,6 +29,9 @@ export class User {
     @Column()
     score:number;
 
+    @Column({default:"#ffffff"})
+    color:string;
+
     @JoinColumn()
     @OneToMany(type => Question, question => question.author,
                 {cascade: true})
