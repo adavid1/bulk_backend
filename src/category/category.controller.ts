@@ -19,10 +19,16 @@ export class CategoryController {
     @Post('/create')
     async addCategory(@Res() res, @Body() categoryDTO: CreateCategoryDTO){
         const category = await this.categoryService.addCategory(categoryDTO);
-        console.log("return "+category);
         return res.status(HttpStatus.OK).json({
             message: "Category has been created successfully", category
         })
+    }
+
+    //fetch all public categories
+    @Get('/public')
+    async getPublicCategories(@Res() res){
+        const categories = await this.categoryService.getPublicCategories();
+        return res.status(HttpStatus.OK).json(categories);
     }
 
     //fetch a category by Id
@@ -35,13 +41,12 @@ export class CategoryController {
 
     //fetch all categories
     @Get('')
-    async getAllCategory(@Res() res){
-        const categories = await this.categoryService.getAllCategory();
+    async getAllCategories(@Res() res){
+        const categories = await this.categoryService.getAllCategories();
         return res.status(HttpStatus.OK).json(categories);
     }
 
     //fetch category questions
-    @UseGuards(AuthGuard('jwt'))
     @Get('/:categoryId/questions')
     async getCategoryQuestions(@Res() res, @Param('categoryId') categoryId) {
         const questions = await this.questionService.getQuestionsByCategory(categoryId);

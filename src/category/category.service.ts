@@ -61,9 +61,16 @@ export class CategoryService {
         return category[0];
     }
 
-    //get all category
-    async getAllCategory(): Promise<Category[]>{
+    //get all categories
+    async getAllCategories(): Promise<Category[]>{
         const categories = await this.categoryRepository.find({relations: ["questions", "owner"]});
+        return categories;
+    }
+
+    //get public categories
+    async getPublicCategories(): Promise<Category[]>{
+        let categories = await this.categoryRepository.find({relations: ["questions", "owner"]});
+        categories = categories.filter(x => x.isPublic == true);
         return categories;
     }
 
