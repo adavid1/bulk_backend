@@ -33,7 +33,7 @@
     "bcrypto": "^4.2.9",
     "class-validator": "^0.10.2",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "mysql": "^2.17.1",
     "nest": "^0.1.6",
     "nest-mongodb": "^6.1.0",
